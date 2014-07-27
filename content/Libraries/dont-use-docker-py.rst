@@ -79,8 +79,8 @@ Now come the real issues.
 
 Some Docker features can’t be used from docker-py.  One has especially driven
 me crazy: ``docker run --rm […]``.  With this ``--rm``, Docker will
-automatically remove the container when its process has finished, either
-normally or after a ``docker kill``.
+automatically remove the container when its process has finished (but we
+explicitly need to remove it if we used ``docker kill``).
 
 One would argue: "you just have to kill the container *then* remove it".
 Of course, that’s what I did.  But *sometimes*, it doesn’t work perfectly.
@@ -98,14 +98,14 @@ I noticed the containers were in fact removed even if an error occurred.
 I abhor that, but I put a ``try`` ``except`` around ``c.remove_container``
 to ignore the issue.
 
-But wait!  That’s not all.  ``kill`` only works with running containers,
-otherwise it raises an ``APIError`` (and that’s not a bad thing).  Docker has
+But wait!  That’s not all.  ``c.kill`` only works with running containers,
+otherwise it raises an ``APIError``.  Docker has
 some tools to inspect a container and therefore know whether it’s running or
 not.  I thought I could detect when the container is running and kill it
 if it’s true.  But no, according to Docker, the process is always running (in
 fact, it’s a `zombie process <http://en.wikipedia.org/wiki/Zombie_process>`_).
-And the line after, ``c.kill`` tell us it’s not running… So you have to
-add another ``try`` ``except`` around ``c.kill`` to ignore this other exception.
+And the line after, ``c.kill`` tells me it’s not running… So you have to
+add another ``try`` ``except`` around ``c.kill``.
 We also need to add a ``c.wait(ctr)`` in order to wait for zombie process to
 finish, between ``c.kill`` and ``c.remove_container``.
 
@@ -184,7 +184,7 @@ I was using Docker 1.0.0, and therefore API version 1.12.
 
 
 Simple solutions are always the best
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After losing 3 full days digging the several issues, I decided to throw
 docker-py away in favour of a classical ``subprocess.Popen``.  It took me an
@@ -224,3 +224,39 @@ And it consists in fewer lines:
 
    assert execute("print('test1')") == 'test1\n'
    assert execute("while True: print('test2')").startswith('test2\n' * 100)
+
+
+Conclusion
+----------
+
+If you only want to control Docker locally, don’t use docker-py.
+Trust me.
+
+If you want to control a remote Docker from Python, I guess you have no option
+but to use docker-py.  Expect a lot of pain if you need some advanced features.
+
+What’s even more disappointing is that
+**Docker may also be the cause of my problems**.
+Because there are probably several issues here.  I would say:
+
++-----------------------------+-----------------------------------------------+
+|Problem                      |Example                                        |
++=============================+===============================================+
+|Docker API inconsistencies   |``docker kill`` doesn’t complain when killing  |
+|compared to                  |non-running containers.  Why is the API        |
+|``docker [command]``         |returning a 500 error?                         |
++-----------------------------+-----------------------------------------------+
+|Bad Docker API documentation |Why can I use the API version from an older    |
+|                             |Docker than the installed one?  Why isn’t      |
+|                             |``c.logs`` working the same between 1.9 and    |
+|                             |1.12 when nothing mentions a change in the     |
+|                             |API changelog?  Or is it because of docker-py? |
++-----------------------------+-----------------------------------------------+
+|docker-py inconsistencies    |No direct equivalent of ``docker run``…        |
++-----------------------------+-----------------------------------------------+
+|Bad docker-py release        |Look at the number of change for 0.3.2         |
+|management                   |in the `docker-py changelog`_ and              |
+|                             |compare it with 0.4.0…                         |
++-----------------------------+-----------------------------------------------+
+
+.. _`docker-py changelog`: https://github.com/docker/docker-py/blob/429654b4eb632357011f9683d4d12fcfe974f41b/ChangeLog.md

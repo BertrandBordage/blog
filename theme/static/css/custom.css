@@ -8,3 +8,41 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+table.docutils {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  border: none;
+}
+
+table.docutils>thead>tr>th,
+table.docutils>tbody>tr>th,
+table.docutils>tfoot>tr>th,
+table.docutils>thead>tr>td,
+table.docutils>tbody>tr>td,
+table.docutils>tfoot>tr>td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+
+table.docutils>caption+thead>tr:first-child>th,
+table.docutils>colgroup+thead>tr:first-child>th,
+table.docutils>thead:first-child>tr:first-child>th,
+table.docutils>caption+thead>tr:first-child>td,
+table.docutils>colgroup+thead>tr:first-child>td,
+table.docutils>thead:first-child>tr:first-child>td {
+  border-top: 0;
+}
+
+table.docutils>thead>tr>th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+table.docutils th, table.docutils td {
+  border: none;
+}
+
