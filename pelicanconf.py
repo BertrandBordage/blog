@@ -19,9 +19,7 @@ FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
-LINKS = (
-    ('Source of this blog', 'https://github.com/BertrandBordage/blog'),
-)
+LINKS = ()
 
 SOCIAL = (
     ('GitHub', 'https://github.com/BertrandBordage'),
