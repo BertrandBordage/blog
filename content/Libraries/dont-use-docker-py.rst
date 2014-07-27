@@ -254,7 +254,7 @@ Because there are probably several issues here.  I would say:
 +-----------------------------+-----------------------------------------------+
 |docker-py inconsistencies    |No direct equivalent of ``docker run``…        |
 +-----------------------------+-----------------------------------------------+
-|Bad docker-py release        |Look at the number of change for 0.3.2         |
+|Bad docker-py release        |Look at the number of changes for 0.3.2        |
 |management                   |in the `docker-py changelog`_ and              |
 |                             |compare it with 0.4.0…                         |
 +-----------------------------+-----------------------------------------------+
