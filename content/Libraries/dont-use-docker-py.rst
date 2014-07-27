@@ -197,12 +197,12 @@ And it consists in fewer lines:
    from subprocess import Popen, PIPE
 
 
-   def kill_or_remove(action, ctr_name):
-       assert action in ('kill', 'rm')
-       p = Popen('docker %s %s' % (action, ctr_name), shell=True, stdout=PIPE,
-                 stderr=PIPE)
-       if p.wait() != 0:
-           raise RuntimeError(p.stderr.read())
+   def kill_and_remove(ctr_name):
+       for action in ('kill', 'rm'):
+           p = Popen('docker %s %s' % (action, ctr_name), shell=True,
+                     stdout=PIPE, stderr=PIPE)
+           if p.wait() != 0:
+               raise RuntimeError(p.stderr.read())
 
 
    def execute(code):
@@ -214,10 +214,10 @@ And it consists in fewer lines:
        out = p.stdout.read()
 
        if p.wait() == -9:  # Happens on timeout
-           # We have to kill it since it still runs, detached from Popen
-           kill_or_remove('kill', ctr_name)
-           # --rm is not working on killed containers, we need to do it explicitely
-           kill_or_remove('rm', ctr_name)
+           # We have to kill the container since it still runs
+           # detached from Popen and we need to remove it after because
+           # --rm is not working on killed containers
+           kill_and_remove(ctr_name)
 
        return out
 
