@@ -29,7 +29,7 @@ SOCIAL = (
     ('Facebook', 'https://www.facebook.com/bertrand.bordage'),
     ('Twitter', 'https://twitter.com/BertrandBordage'),
 )
-GITHUB_URL = 'https://github.com/BertrandBordage/BertrandBordage.github.io'
+GITHUB_URL = 'https://github.com/BertrandBordage/blog'
 TWITTER_USERNAME = 'BertrandBordage'
 
 
