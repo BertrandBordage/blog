@@ -8,7 +8,7 @@
     {% set article = articles.pop(0) %}
     <div class="jumbotron text-center">
       <h1><a href="/{{ article.url }}">{{ article.title }}</a></h1>
-      <p>{{ article.summary }}</p>
+      {{ article.summary }}
     </div>
   {% endif %}
 
