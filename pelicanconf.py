@@ -12,16 +12,16 @@ PATH = 'content'
 DEFAULT_LANG = 'en'
 LOCALE = 'en_US.UTF-8'
 TIMEZONE = 'Europe/Paris'
-DATE_FORMATS = {
-    'en': '%d %B %Y'
-}
+DEFAULT_DATE_FORMAT = '%d %B %Y'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
-LINKS = ()
+LINKS = (
+    ('Source of this blog', 'https://github.com/BertrandBordage/blog'),
+)
 
 SOCIAL = (
     ('GitHub', 'https://github.com/BertrandBordage'),
