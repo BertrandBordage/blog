@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+
+  <h1 class="page-header">
+    {{ article.title }}
+    {% set authors = article.authors %}
+    {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
+      <small>
+        by
+        {% for author in authors %}
+          <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </small>
+    {% endif %}
+  </h1>
+
+  {{ article.content }}
+
+  <hr />
+
+  {% include 'include/article-footer.html' %}
+
+{% endblock %}

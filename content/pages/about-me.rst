@@ -11,7 +11,7 @@ for french public institutions such as
 the `CNRS <http://www.cnrs.fr/>`_ (National Center for Scientific Research)
 and the universities of
 `Rouen <http://www.univ-rouen.fr/>`_
-& `Montpellier III <http://www.univ-montp3.fr/>`_.
+& `Montpellier III <http://www.univ-montp3.fr/>`_.
 
 Two projects I build and maintain since 2011: `Dezède <https://dezede.org/>`_
 and `Criminocorpus <https://criminocorpus.org>`_.

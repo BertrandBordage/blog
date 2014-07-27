@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1 class="page-header">{{ SITENAME }} <small>{{ SITESUBTITLE }}</small></h1>
+
+  {% set article = articles.pop(0) %}
+  <div class="jumbotron text-center">
+    <h1><a href="/{{ article.url }}">{{ article.title }}</a></h1>
+    <p>{{ article.summary }}</p>
+  </div>
+
+  <hr />
+
+  <h2 class="text-center">More articles</h2>
+
+  <div class="row">
+    {% for article in articles %}
+      {% include 'include/article.html' %}
+    {% endfor %}
+  </div>
+{% endblock %}

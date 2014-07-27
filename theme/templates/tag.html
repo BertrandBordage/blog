@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block content %}
+  <h1 class="page-header"><i class="fa fa-tag"></i> {{ tag.name }}</h1>
+
+  <div class="row">
+    {% for article in articles %}
+      {% include 'include/article.html' %}
+    {% endfor %}
+  </div>
+{% endblock %}

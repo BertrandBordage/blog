@@ -1,0 +1,11 @@
+<div class="clearfix text-muted">
+  <div class="pull-left">
+    {% if article.tags %}
+      <i class="fa fa-tag{% if article.tags|length > 1 %}s{% endif %}"></i>
+      {% include 'include/tags.html' %}
+    {% endif %}
+  </div>
+  <div class="pull-right">
+    <i class="fa fa-calendar"></i> {{ article.locale_date }}
+  </div>
+</div>
