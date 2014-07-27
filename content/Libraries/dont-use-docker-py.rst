@@ -89,26 +89,24 @@ Broken things
 
 **And here comes the madness.**
 
-An ``APIError`` is raised by docker-py, stating that the container can’t be removed
-because it’s still in use or still moving.  I guess it’s because docker-py
-sends a kill request without waiting the end of the real killing,
-so sometimes removal happens before the end of kill.  Oddly enough, I noticed
-the containers were in fact removed even if an error occurred.  I abhor that,
-but I put a ``try\except`` around ``c.remove_container`` to ignore the issue.
+An ``APIError`` is randomly raised by docker-py, stating that the container
+can’t be removed because it’s still in use or still moving.  I guess it’s
+because docker-py sends a kill request without waiting the end of the real
+killing, so sometimes removal happens before the end of kill.  Oddly enough,
+I noticed the containers were in fact removed even if an error occurred.
+I abhor that, but I put a ``try\except`` around ``c.remove_container``
+to ignore the issue.
 
 But wait!  That’s not all.  ``kill`` only works with running containers,
 otherwise it raises an ``APIError`` (and that’s not a bad thing).  Docker has
 some tools to inspect a container and therefore know whether it’s running or
-not.  I thought I could only kill the container when it’s running.  But no,
-according to Docker, the process is always running (in fact, it’s a
-`zombie process <http://en.wikipedia.org/wiki/Zombie_process>`_).
+not.  I thought I could detect when the container is running and kill it
+if it’s true.  But no, according to Docker, the process is always running (in
+fact, it’s a `zombie process <http://en.wikipedia.org/wiki/Zombie_process>`_).
 And the line after, ``c.kill`` tell us it’s not running… So you have to
 add another ``try/except`` around ``c.kill`` to ignore this other exception.
 We also need to add a ``c.wait(ctr)`` in order to wait for zombie process to
 finish, between ``c.kill`` and ``c.remove_container``.
-
-Instead of this ``try/except``, I decided to add a timeout to decide if a
-kill was needed or not.
 
 I wanted to get the output of something like this::
 
@@ -145,16 +143,15 @@ And ended up with this:
            for line in c.logs(ctr, stderr=False, stream=True):
                out += line
    except TimeoutException:
+       pass
+   try:
        c.kill(ctr)
-   c.wait(ctr)
+   except APIError:
+       c.wait(ctr)
    try:
        c.remove_container(ctr)
    except APIError:
        pass  # Normally, this should work anyway (and I don’t understand why).
-
-
-And I had to keep that last ``try/except`` because for an unknown reason,
-I still experienced random ``APIErrors``.
 
 At least I had a working version!  Docker was still throwing me some random
 warning, but I got what I wanted.
@@ -183,5 +180,5 @@ And it only consists in a few lines:
 
    p = Popen(['timeout', '-s', 'SIGKILL', '5', 'docker', 'run', '--rm',
               'ubuntu:14.04', 'python3', '-c', 'while True: pass'],
-               stdout=PIPE)
+             stdout=PIPE)
    out = p.stdout.read()
