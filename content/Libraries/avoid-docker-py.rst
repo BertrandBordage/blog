@@ -63,7 +63,7 @@ Inconsistencies
 And it doesn’t take long.  The first thing you realize is that the syntax is
 very different from Docker.  You thought ``docker run myimage`` would be
 ``c.run('myimage')``?  No, that was too easy.
-It’s ``ctr = c.create_container`` then ``c.start(ctr)``.
+It’s ``ctr = c.create_container('myimage')`` then ``c.start(ctr)``.
 
 I’m not a docker expert, so I guess there’s a good reason for this choice.
 But I don’t think there is a good reason for the following choices.
