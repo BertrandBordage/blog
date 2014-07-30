@@ -13,7 +13,7 @@
 
   {% if articles %}
     {% set article = articles.pop(0) %}
-    <article class="jumbotron text-center">
+    <article class="jumbotron">
       <header>
         <h1><a href="/{{ article.url }}">{{ article.title }}</a></h1>
       </header>
