@@ -14,26 +14,29 @@
 
   <article>
 
-    <header>
-      <h1 class="page-header">
-        {{ article.title }}
-        {% set authors = article.authors %}
-        {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
-          <small>
-            by
-            {% for author in authors %}
-              <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
-          </small>
-        {% endif %}
-      </h1>
+    <header class="page-header">
+      <div class="row">
+        <h1 class="col-xs-9">
+          {{ article.title }}
+          {% set authors = article.authors %}
+          {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
+            <small>
+              by
+              {% for author in authors %}
+                <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </small>
+          {% endif %}
+        </h1>
+
+        <aside class="col-xs-3 text-right">
+          {% include 'include/article-date.html' %}<br />
+          {% include 'include/article-tags.html' %}
+        </aside>
+      </div>
     </header>
 
     {{ article.content }}
-
-    <hr />
-
-    {% include 'include/article-footer.html' %}
 
   </article>
 

@@ -1,11 +1,8 @@
-<footer class="clearfix text-muted">
+<footer class="clearfix">
   <div class="pull-left">
-    {% if article.tags %}
-      <i class="fa fa-tag{% if article.tags|length > 1 %}s{% endif %}"></i>
-      {% include 'include/tags.html' %}
-    {% endif %}
+  {% include 'include/article-tags.html' %}
   </div>
   <div class="pull-right">
-    <i class="fa fa-calendar"></i> <time datetime="{{ article.date.date() }}">{{ article.locale_date }}</time>
+    {% include 'include/article-date.html' %}
   </div>
 </footer>
