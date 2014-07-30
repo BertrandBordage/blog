@@ -21,12 +21,12 @@
 
     {% if FEED_ALL_ATOM %}
       <link rel="alternate" type="application/atom+xml"
-            title="Bertrand Bordage" href="/{{ FEED_ALL_ATOM }}" />
+            title="Bertrand Bordage" href="{{ SITEURL }}/{{ FEED_ALL_ATOM }}" />
     {% endif %}
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/theme/css/pygment.css" rel="stylesheet" />
-    <link href="/theme/css/custom.css" rel="stylesheet" />
+    <link href="{{ SITEURL }}/theme/css/pygment.css" rel="stylesheet" />
+    <link href="{{ SITEURL }}/theme/css/custom.css" rel="stylesheet" />
   </head>
   <body>
 

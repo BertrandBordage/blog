@@ -1,7 +1,7 @@
 <article itemscope itemtype="http://schema.org/Article">
   <header>
     <h3>
-      <a href="/{{ article.url }}" itemprop="name">{{ article.title }}</a>
+      <a href="{{ SITEURL }}/{{ article.url }}" itemprop="name">{{ article.title }}</a>
     </h3>
     {% for author in article.authors %}
       <meta itemprop="author" content="{{ author }}" />

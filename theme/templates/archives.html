@@ -19,11 +19,11 @@
       <tr>
         <td>{% include 'include/article-date.html' %}</td>
         <td>
-          <strong><a href="/{{ article.url }}">{{ article.title }}</a></strong>
+          <strong><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></strong>
         </td>
         <td>{{ article.summary }}</td>
         <td>
-          <a href="/{{ article.category.url }}">{{ article.category.name }}</a>
+          <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
         </td>
         <td>{% include 'include/article-tags.html' %}</td>
       </tr>

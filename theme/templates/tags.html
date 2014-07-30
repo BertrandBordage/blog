@@ -15,7 +15,7 @@
     <tbody>
       {% for tag, articles in tags %}
         <tr>
-          <td><a href="/{{ tag.url }}">{{ tag.name }}</a></td>
+          <td><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag.name }}</a></td>
           <td>{{ articles|length }}</td>
         </tr>
       {% endfor %}

@@ -27,7 +27,7 @@
             <small>
               by
               {% for author in authors %}
-                <a href="/{{ author.url }}" itemprop="author">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
+                <a href="{{ SITEURL }}/{{ author.url }}" itemprop="author">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
               {% endfor %}
             </small>
           {% endif %}

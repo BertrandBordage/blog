@@ -10,7 +10,6 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'http://bertrandbordage.github.io'
 RELATIVE_URLS = False
 WITH_FUTURE_DATES = False
 

@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">{{ SITENAME }}</a>
+      <a class="navbar-brand" href="{{ SITEURL }}/">{{ SITENAME }}</a>
     </div>
 
     <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -21,25 +21,25 @@
             <ul class="dropdown-menu" role="menu">
               {% for cat, null in categories %}
                 <li{% if cat == category %} class="active"{% endif %}>
-                  <a href="/{{ cat.url }}">{{ cat.name }}</a>
+                  <a href="{{ SITEURL }}/{{ cat.url }}">{{ cat.name }}</a>
                 </li>
               {% endfor %}
             </ul>
           </li>
         {% endif %}
         <li>
-          <a href="/{{ TAGS_URL|default('tags.html') }}">
+          <a href="{{ SITEURL }}/{{ TAGS_URL|default('tags.html') }}">
             <i class="fa fa-tags"></i> Tags
           </a>
         </li>
         <li>
-          <a href="/{{ ARCHIVES_URL|default('archives.html') }}">
+          <a href="{{ SITEURL }}/{{ ARCHIVES_URL|default('archives.html') }}">
             <i class="fa fa-archive"></i> Archives
           </a>
         </li>
         {% if authors|length > 1 %}
           <li>
-            <a href="/{{ AUTHORS_URL|default('authors.html') }}">
+            <a href="{{ SITEURL }}/{{ AUTHORS_URL|default('authors.html') }}">
               <i class="fa fa-users"></i> Authors
             </a>
           </li>
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav navbar-right">
         {% for p in pages %}
           <li{% if p == page %} class="active"{% endif %}>
-            <a href="/{{ p.url }}">{{ p.title }}</a>
+            <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
           </li>
         {% endfor %}
       </ul>

@@ -15,7 +15,7 @@
     <tbody>
       {% for author, articles in authors %}
         <tr>
-          <td><a href="/{{ author.url }}">{{ author.name }}</a></td>
+          <td><a href="{{ SITEURL }}/{{ author.url }}">{{ author.name }}</a></td>
           <td>{{ articles|length }}</td>
         </tr>
       {% endfor %}
