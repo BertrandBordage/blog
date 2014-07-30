@@ -49,3 +49,7 @@ table.docutils th, table.docutils td {
 article p {
   text-align: justify;
 }
+
+.page-header aside {
+  margin-top: 20px;
+}
