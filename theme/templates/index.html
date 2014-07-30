@@ -2,25 +2,39 @@
 
 {% block content %}
 
-  <h1 class="page-header">{{ SITENAME }} <small>{{ SITESUBTITLE }}</small></h1>
+  <header>
+    <h1 class="page-header">
+      {{ SITENAME }}
+      {% if SITESUBTITLE %}
+        <small>{{ SITESUBTITLE }}</small>
+      {% endif %}
+    </h1>
+  </header>
 
   {% if articles %}
     {% set article = articles.pop(0) %}
-    <div class="jumbotron text-center">
-      <h1><a href="/{{ article.url }}">{{ article.title }}</a></h1>
+    <article class="jumbotron text-center">
+      <header>
+        <h1><a href="/{{ article.url }}">{{ article.title }}</a></h1>
+      </header>
       {{ article.summary }}
-    </div>
+      {% include 'include/article-footer.html' %}
+    </article>
   {% endif %}
 
   {% if articles %}
     <hr />
 
-    <h2 class="text-center">More articles</h2>
+    <section>
+      <header>
+        <h2 class="text-center">More articles</h2>
+      </header>
 
-    <div class="row">
-      {% for article in articles %}
-        {% include 'include/article.html' %}
-      {% endfor %}
-    </div>
+      <section class="row">
+        {% for article in articles %}
+          {% include 'include/article.html' %}
+        {% endfor %}
+      </section>
+    </section>
   {% endif %}
 {% endblock %}

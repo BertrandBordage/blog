@@ -1,27 +1,42 @@
 {% extends 'base.html' %}
 
+{% block lang %}{{ article.lang }}{% endblock %}
+
+{% block metadata %}
+  <meta name="author" content="{{ article.authors|join(', ') }}" />
+  <meta name="description" content="{{ article.summary|default(article.title)|striptags }}" />
+  <meta name="keywords" content="{{ article.tags|join(', ') }}" />
+{% endblock %}
+
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
 
-  <h1 class="page-header">
-    {{ article.title }}
-    {% set authors = article.authors %}
-    {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
-      <small>
-        by
-        {% for author in authors %}
-          <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
-        {% endfor %}
-      </small>
-    {% endif %}
-  </h1>
+  <article>
 
-  {{ article.content }}
+    <header>
+      <h1 class="page-header">
+        {{ article.title }}
+        {% set authors = article.authors %}
+        {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
+          <small>
+            by
+            {% for author in authors %}
+              <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          </small>
+        {% endif %}
+      </h1>
+    </header>
 
-  <hr />
+    {{ article.content }}
 
-  {% include 'include/article-footer.html' %}
+    <hr />
+
+    {% include 'include/article-footer.html' %}
+
+  </article>
+
   {% include 'include/disqus-comments.html' %}
 
 {% endblock %}
