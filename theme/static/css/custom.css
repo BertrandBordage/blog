@@ -1,3 +1,8 @@
+body {
+  margin-top: 51px;
+  margin-bottom: 70px;
+}
+
 .docutils.literal {
   font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
   padding: 1px 4px;
