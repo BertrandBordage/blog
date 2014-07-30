@@ -25,6 +25,7 @@ LINKS = ()
 
 SOCIAL = (
     ('GitHub', 'https://github.com/BertrandBordage'),
+    ('Gittip', 'https://www.gittip.com/BertrandBordage/'),
     ('Bitbucket', 'https://bitbucket.org/bbordage'),
     ('Facebook', 'https://www.facebook.com/bertrand.bordage'),
     ('Twitter', 'https://twitter.com/BertrandBordage'),
