@@ -18,10 +18,10 @@
     {% for article in dates %}
       <tr>
         <td>{{ article.locale_date }}</td>
-        <td><a href="{{ article.url }}">{{ article.title }}</a></td>
+        <td><a href="/{{ article.url }}">{{ article.title }}</a></td>
         <td>{{ article.summary }}</td>
         <td>
-          <a href="{{ article.category.url }}">{{ article.category.name }}</a>
+          <a href="/{{ article.category.url }}">{{ article.category.name }}</a>
         </td>
         <td>{% include 'include/tags.html' %}</td>
       </tr>

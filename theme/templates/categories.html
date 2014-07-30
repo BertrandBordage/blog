@@ -15,7 +15,7 @@
     <tbody>
       {% for category, articles in categories %}
         <tr>
-          <td><a href="{{ category.url }}">{{ category.name }}</a></td>
+          <td><a href="/{{ category.url }}">{{ category.name }}</a></td>
           <td>{{ articles|length }}</td>
         </tr>
       {% endfor %}
