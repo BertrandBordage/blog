@@ -28,18 +28,18 @@
           </li>
         {% endif %}
         <li>
-          <a href="/tags.html">
+          <a href="/{{ TAGS_URL|default('tags.html') }}">
             <i class="fa fa-tags"></i> Tags
           </a>
         </li>
         <li>
-          <a href="/archives.html">
+          <a href="/{{ ARCHIVES_URL|default('archives.html') }}">
             <i class="fa fa-archive"></i> Archives
           </a>
         </li>
         {% if authors|length > 1 %}
           <li>
-            <a href="/authors.html">
+            <a href="/{{ AUTHORS_URL|default('authors.html') }}">
               <i class="fa fa-users"></i> Authors
             </a>
           </li>

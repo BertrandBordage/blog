@@ -38,3 +38,33 @@ DEFAULT_PAGINATION = False
 RELATIVE_URLS = True
 
 THEME = 'theme'
+
+ARTICLE_URL = '{slug}/'
+ARTICLE_LANG_URL = '{slug}-{lang}/'
+DRAFT_URL = 'drafts/{slug}/'
+DRAFT_LANG_URL = 'drafts/{slug}-{lang}/'
+PAGE_URL = 'pages/{slug}/'
+PAGE_LANG_URL = 'pages/{slug}-{lang}/'
+CATEGORY_URL = 'category/{slug}/'
+TAG_URL = 'tag/{slug}/'
+AUTHOR_URL = 'author/{slug}/'
+
+ARTICLE_SAVE_AS = '{slug}/index.html'
+ARTICLE_LANG_SAVE_AS = '{slug}-{lang}/index.html'
+DRAFT_SAVE_AS = 'drafts/{slug}/index.html'
+DRAFT_LANG_SAVE_AS = 'drafts/{slug}-{lang}/index.html'
+PAGE_SAVE_AS = 'pages/{slug}/index.html'
+PAGE_LANG_SAVE_AS = 'pages/{slug}-{lang}/index.html'
+CATEGORY_SAVE_AS = 'category/{slug}/index.html'
+TAG_SAVE_AS = 'tag/{slug}/index.html'
+AUTHOR_SAVE_AS = 'author/{slug}/index.html'
+
+ARCHIVES_URL = 'archives/'
+AUTHORS_URL = 'authors/'
+CATEGORIES_URL = 'categories/'
+TAGS_URL = 'tags/'
+
+ARCHIVES_SAVE_AS = 'archives/index.html'
+AUTHORS_SAVE_AS = 'authors/index.html'
+CATEGORIES_SAVE_AS = 'categories/index.html'
+TAGS_SAVE_AS = 'tags/index.html'
