@@ -25,10 +25,10 @@
         {% for text, url in SOCIAL %}
           <li>
             <a href="{{ url }}" title="{{ text }}" class="hidden-xs">
-              <i class="fa fa-{{ text.lower() }} fa-lg"></i>
+              <i class="fa fa-{{ text.lower() }} fa-fw fa-lg"></i>
             </a>
             <a href="{{ url }}" class="visible-xs">
-              <i class="fa fa-{{ text.lower() }}"></i> {{ text }}
+              <i class="fa fa-{{ text.lower() }} fa-fw"></i> {{ text }}
             </a>
           </li>
         {% endfor %}
