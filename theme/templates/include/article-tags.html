@@ -1,6 +1,7 @@
 {% if article.tags %}
   <i class="fa fa-tag{% if article.tags|length > 1 %}s{% endif %} text-muted"></i>
   {% for tag in article.tags %}
-    <a class="label label-default" href="/{{ tag.url }}">{{ tag.name }}</a>
+    <a class="label label-default" href="/{{ tag.url }}"
+       itemprop="keywords">{{ tag.name }}</a>
   {% endfor %}
 {% endif %}

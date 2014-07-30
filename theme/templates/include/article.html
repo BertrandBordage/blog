@@ -1,9 +1,14 @@
-<section class="col-md-6 col-lg-4">
-  <article class="well well-sm">
-    <header>
-      <h3><a href="/{{ article.url }}">{{ article.title }}</a></h3>
-    </header>
+<article itemscope itemtype="http://schema.org/Article">
+  <header>
+    <h3>
+      <a href="/{{ article.url }}" itemprop="name">{{ article.title }}</a>
+    </h3>
+    {% for author in article.authors %}
+      <meta itemprop="author" content="{{ author }}" />
+    {% endfor %}
+  </header>
+  <div itemprop="description">
     {{ article.summary }}
-    {% include 'include/article-footer.html' %}
-  </article>
-</section>
+  </div>
+  {% include 'include/article-footer.html' %}
+</article>

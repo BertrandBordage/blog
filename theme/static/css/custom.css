@@ -58,3 +58,7 @@ article p {
 .page-header aside {
   margin-top: 20px;
 }
+
+.jumbotron h3 {
+  font-size: 63px;
+}

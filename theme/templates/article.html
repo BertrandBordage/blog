@@ -12,18 +12,22 @@
 
 {% block content %}
 
-  <article>
+  <article itemscope itemtype="http://schema.org/Article">
 
     <header class="page-header">
       <div class="row">
         <h1 class="col-xs-9">
-          {{ article.title }}
+          <span itemprop="name">
+            {{ article.title }}
+          </span>
           {% set authors = article.authors %}
-          {% if not (authors|length == 1 and authors[0] == AUTHOR) %}
+          {% if authors|length == 1 and authors[0] == AUTHOR %}
+            <meta itemprop="author" content="{{ article.author }}" />
+          {% else %}
             <small>
               by
               {% for author in authors %}
-                <a href="/{{ author.url }}">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
+                <a href="/{{ author.url }}" itemprop="author">{{ author.name }}</a>{% if not loop.last %}, {% endif %}
               {% endfor %}
             </small>
           {% endif %}
@@ -36,7 +40,9 @@
       </div>
     </header>
 
-    {{ article.content }}
+    <div itemprop="articleBody">
+      {{ article.content }}
+    </div>
 
   </article>
 
