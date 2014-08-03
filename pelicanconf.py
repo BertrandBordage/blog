@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = 'Bertrand Bordage'
 SITENAME = 'Bertrand Bordage'
 SITESUBTITLE = 'Python libs & optimization'
-SITEURL = 'http://bertrandbordage.github.io'
+SITEURL = 'http://blog.bordage.pro'
 
 PATH = 'content'
 
@@ -69,3 +69,8 @@ ARCHIVES_SAVE_AS = 'archives/index.html'
 AUTHORS_SAVE_AS = 'authors/index.html'
 CATEGORIES_SAVE_AS = 'categories/index.html'
 TAGS_SAVE_AS = 'tags/index.html'
+
+STATIC_PATHS = [
+    'images',
+    'CNAME',
+]
