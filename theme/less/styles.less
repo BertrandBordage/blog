@@ -1,0 +1,134 @@
+@import 'bootstrap';
+@import '../Font-Awesome/less/font-awesome';
+@import '../css/pygment.css';
+
+@fa-font-path: '../Font-Awesome/fonts';
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-top: @navbar-height + 1px;  // 1px of border
+  margin-bottom: @navbar-height + @grid-gutter-width;
+}
+
+.docutils.literal {
+  font-family: @font-family-monospace;
+  padding: 1px 4px;
+  font-size: @font-size-base - 1;
+  word-wrap: break-word;
+  color: @pre-color;
+  background-color: @pre-bg;
+  border: 1px solid @pre-border-color;
+  border-radius: @border-radius-base;
+}
+
+// FIXME: This is a copy of the .table styling of Bootstrap.
+
+table.docutils {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: @line-height-computed;
+  // Cells
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        padding: @table-cell-padding;
+        line-height: @line-height-base;
+        vertical-align: top;
+        border-top: 1px solid @table-border-color;
+      }
+    }
+  }
+  // Bottom align for column headings
+  > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid @table-border-color;
+  }
+  // Remove top border from thead by default
+  > caption + thead,
+  > colgroup + thead,
+  > thead:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top: 0;
+      }
+    }
+  }
+  // Account for multiple tbody instances
+  > tbody + tbody {
+    border-top: 2px solid @table-border-color;
+  }
+
+  // Nesting
+  table.docutils {
+    background-color: @body-bg;
+  }
+}
+
+article p {
+  text-align: justify;
+}
+
+.page-header aside {
+  margin-top: @line-height-computed;
+  @media (min-width: @screen-sm-min) {
+    text-align: right;
+  }
+}
+
+.jumbotron h3 {
+  font-size: @font-size-h1;
+}
+
+.column-count(@value) {
+  -webkit-column-count: @value;
+  -moz-column-count: @value;
+  column-count: @value;
+}
+
+.column-gap(@value) {
+  -webkit-column-gap: @value;
+  -moz-column-gap: @value;
+  column-gap: @value;
+}
+
+
+.columns {
+  @media (min-width: @screen-sm-min) {
+    .column-gap(@grid-gutter-width);
+
+    .column-cell {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    .column-count(2);
+  }
+  @media (min-width: @screen-md-min) {
+    .column-count(3);
+  }
+}
+
+.footer {
+  position: absolute;
+}
+
+td.linenos {
+  pre {
+    .border-right-radius(0);
+    border-right: none;
+    background-color: white;
+  }
+
+  &+.code pre {
+    .border-left-radius(0);
+  }
+}
