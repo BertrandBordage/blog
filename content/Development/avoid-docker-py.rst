@@ -2,6 +2,7 @@ Avoid docker-py
 ===============
 
 :date: 2014-07-27
+:modified: 2014-07-30
 :tags: python, docker, libraries
 :summary: What’s the best way to use Docker with Python?
 
