@@ -4,29 +4,5 @@
 
 {% block content %}
   <h1 class="page-header"><i class="fa fa-archive"></i> Archives</h1>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Article</th>
-        <th>Summary</th>
-        <th>Category</th>
-        <th></th>
-      </tr>
-    </thead>
-    {% for article in dates %}
-      <tr>
-        <td>{% include 'include/article-date.html' %}</td>
-        <td>
-          <strong><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></strong>
-        </td>
-        <td>{{ article.summary }}</td>
-        <td>
-          <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category.name }}</a>
-        </td>
-        <td>{% include 'include/article-tags.html' %}</td>
-      </tr>
-    {% endfor %}
-  </table>
+  {% include 'include/article-table.html' %}
 {% endblock %}

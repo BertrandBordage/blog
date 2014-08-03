@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ author }}{% endblock %}
 
 {% block content %}
+  <h1 class="page-header"><i class="fa fa-user"></i> {{ author }}</h1>
+  {% include 'include/article-table.html' %}
 {% endblock %}
