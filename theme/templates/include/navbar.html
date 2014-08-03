@@ -45,13 +45,15 @@
           </li>
         {% endif %}
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        {% for p in pages %}
-          <li{% if p == page %} class="active"{% endif %}>
-            <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+      {% if DISPLAY_PAGES_ON_MENU %}
+        <ul class="nav navbar-nav navbar-right">
+          {% for p in pages %}
+            <li{% if p == page %} class="active"{% endif %}>
+              <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
   </div>
 </nav>
