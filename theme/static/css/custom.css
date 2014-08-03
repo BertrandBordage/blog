@@ -65,7 +65,21 @@ article p {
 }
 
 .jumbotron h3 {
-  font-size: 63px;
+  font-size: 36px;
+}
+
+.columns-3 {
+  -webkit-column-count: 3;
+  -webkit-column-gap: 30px;
+  -moz-column-count: 3;
+  -moz-column-gap: 30px;
+  column-count: 3;
+  column-gap: 30px;
+}
+
+.column-cell {
+  display: inline-block;
+  width: 100%;
 }
 
 .footer {
