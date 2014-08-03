@@ -1,6 +1,14 @@
 <span class="text-muted">
-  <i class="fa fa-calendar"></i>
-  <time datetime="{{ article.date.date() }}" itemprop="datePublished">
+  <i class="fa fa-calendar fa-fw"></i>
+  <time datetime="{{ article.date.date() }}" itemprop="datePublished"
+        title="Publication">
     {{ article.locale_date }}
   </time>
+  {% if article.modified is defined and article.modified != article.date %}
+    −
+    <time datetime="{{ article.modified.date() }}" itemprop="dateModified"
+          title="Last modification">
+     {{ article.locale_modified }}
+    </time>
+  {% endif %}
 </span>

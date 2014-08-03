@@ -1,5 +1,5 @@
 {% if article.tags %}
-  <i class="fa fa-tag{% if article.tags|length > 1 %}s{% endif %} text-muted"></i>
+  <i class="fa fa-tag{% if article.tags|length > 1 %}s{% endif %} fa-fw text-muted"></i>
   {% for tag in article.tags %}
     <a class="label label-default" href="{{ SITEURL }}/{{ tag.url }}"
        itemprop="keywords">{{ tag.name }}</a>
