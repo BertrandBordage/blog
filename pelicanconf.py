@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
+from jinja2 import Environment as jinja2_env
+from webassets import Environment as AssetsEnvironment
+from webassets.ext.jinja2 import AssetsExtension
 
 AUTHOR = 'Bertrand Bordage'
 SITENAME = 'Bertrand Bordage'
@@ -13,6 +16,10 @@ DEFAULT_LANG = 'en'
 LOCALE = 'en_US.UTF-8'
 TIMEZONE = 'Europe/Paris'
 DEFAULT_DATE_FORMAT = '%d %B %Y'
+
+JINJA_EXTENSIONS = [AssetsExtension]
+
+jinja2_env.assets_environment = AssetsEnvironment('./theme/static/', 'theme/')
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None

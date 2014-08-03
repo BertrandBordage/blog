@@ -1,0 +1,6 @@
+[submodule "theme/static/bootstrap"]
+	path = theme/static/bootstrap
+	url = https://github.com/twbs/bootstrap
+[submodule "theme/static/Font-Awesome"]
+	path = theme/static/Font-Awesome
+	url = https://github.com/FortAwesome/Font-Awesome
