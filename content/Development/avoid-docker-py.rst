@@ -118,7 +118,6 @@ with a time limit of 2 seconds::
 And ended up with something like this:
 
 .. code-block:: python
-    :linenos: table
 
     from contextlib import contextmanager
     import signal
@@ -195,7 +194,6 @@ hour to get exactly what I wanted.
 And it consists in fewer lines:
 
 .. code-block:: python
-    :linenos: table
 
     from subprocess import Popen, PIPE
 
