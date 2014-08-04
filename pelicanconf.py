@@ -46,6 +46,7 @@ DEFAULT_PAGINATION = False
 RELATIVE_URLS = True
 
 THEME = 'theme'
+THEME_STATIC_PATHS = ['static', 'Font-Awesome/fonts']
 
 ARTICLE_URL = '{slug}/'
 ARTICLE_LANG_URL = '{slug}-{lang}/'
