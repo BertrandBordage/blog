@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="Pelican">
+  <meta name="author" content="Bertrand Bordage" />
+  <meta name="description" content="What’s the best way to use Docker with Python?" />
+  <meta name="keywords" content="python, docker, libraries" />
+    <title>
+Avoid docker-py |       Bertrand Bordage
+    </title>
+
+      <link rel="alternate" type="application/atom+xml"
+            title="Bertrand Bordage" href="http://blog.bordage.pro/feeds/all.atom.xml" />
+      <link rel="stylesheet" href="http://blog.bordage.pro/theme/less/styles.min.css?39a54618/">
+  </head>
+  <body>
+
+    <header>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://blog.bordage.pro/">Bertrand Bordage</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li>
+          <a href="http://blog.bordage.pro/tags/">
+            <i class="fa fa-tags"></i> Tags
+          </a>
+        </li>
+        <li>
+          <a href="http://blog.bordage.pro/archives/">
+            <i class="fa fa-archive"></i> Archives
+          </a>
+        </li>
+      </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="http://blog.bordage.pro/pages/about-me/">About me</a>
+            </li>
+        </ul>
+    </div>
+  </div>
+</nav>    </header>
+
+    <section class="container">
+
+  <article itemscope itemtype="http://schema.org/Article">
+
+    <header class="page-header">
+      <div class="row">
+        <h1 class="col-sm-8 col-md-9">
+          <span itemprop="name">
+            Avoid docker-py
+          </span>
+            <meta itemprop="author" content="Bertrand Bordage" />
+        </h1>
+
+        <aside class="col-sm-4 col-md-3">
+<span class="text-muted">
+  <i class="fa fa-calendar fa-fw"></i>
+  <time datetime="2014-07-27" itemprop="datePublished"
+        title="Publication">
+    27 July 2014
+  </time>
+    −
+    <time datetime="2014-07-30" itemprop="dateModified"
+          title="Last modification">
+     30 July 2014
+    </time>
+</span><br />
+  <i class="fa fa-tags fa-fw text-muted"></i>
+    <a class="label label-default" href="http://blog.bordage.pro/tag/python/"
+       itemprop="keywords">python</a>
+    <a class="label label-default" href="http://blog.bordage.pro/tag/docker/"
+       itemprop="keywords">docker</a>
+    <a class="label label-default" href="http://blog.bordage.pro/tag/libraries/"
+       itemprop="keywords">libraries</a>
+        </aside>
+      </div>
+    </header>
+
+    <div itemprop="articleBody">
+      <div class="section" id="whats-docker">
+<h2>What’s Docker?</h2>
+<p><a class="reference external" href="https://www.docker.com/">Docker</a> allows you to easily deploy
+a web application anywhere without worrying about which OS or libraries are
+installed on the server.  That’s it for the original idea.</p>
+<p>But that’s not all.  This simple idea implies a lot of applications.
+For instance, it can be used for load balancing
+(using tools such as <a class="reference external" href="https://coreos.com/">CoreOS</a>)
+or to execute untrusted code in a quite secure environment.</p>
+<p>Note that Docker is not perfectly safe for the latter use
+(<a class="reference external" href="https://news.ycombinator.com/item?id=7909622">as stated by the Docker team</a>).</p>
+</div>
+<div class="section" id="how-to-use-docker-directly-from-python">
+<h2>How to use Docker directly from Python?</h2>
+<p>Docker is normally called using commands like <tt class="docutils literal">docker build <span class="pre">-t</span> myimage .</tt>
+or <tt class="docutils literal">docker run myimage</tt>.  But if you script your Docker workflow using Python
+like I do, you want to find an easy, reliable and robust way to call these
+commands inside Python.</p>
+<p>You therefore have two solutions:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/docker/docker-py">docker-py</a>, the official
+Python binding from the Docker team;</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.Popen">subprocess.Popen</a>,
+the good old way of calling an external program from Python.</li>
+</ul>
+<div class="section" id="that-seemed-obvious">
+<h3>That seemed obvious…</h3>
+<p>At first, docker-py looks very promising.</p>
+<p>Not only because it is brought by a team that did a wonderful job on Docker
+during the past year, but also because it uses the Docker Remote API.
+That means we should be able to easily control Docker through the network
+without leaving our comfortable Python.  We can even change the API version
+to communicate with an outdated version of Docker!</p>
+<p>Another good point: it seems that the syntax is very close to the regular
+<tt class="docutils literal">docker [command]</tt>.  You just have to initialize a connection with the
+Docker daemon, and there you go! <tt class="docutils literal">docker build <span class="pre">-t</span> myimage .</tt> becomes
+<tt class="docutils literal"><span class="pre">c.build('.',</span> 'myimage')</tt>, <tt class="docutils literal">docker commit mycontainer</tt> becomes
+<tt class="docutils literal"><span class="pre">c.commit('mycontainer')</span></tt>, etc.</p>
+</div>
+<div class="section" id="until-you-discover-the-inconsistent-missing-or-broken-things">
+<h3>…until you discover the inconsistent, missing, or broken things</h3>
+<div class="section" id="inconsistencies">
+<h4>Inconsistencies</h4>
+<p>And it doesn’t take long.  The first thing you realize is that the syntax is
+very different from Docker.  You thought <tt class="docutils literal">docker run myimage</tt> would be
+<tt class="docutils literal"><span class="pre">c.run('myimage')</span></tt>?  No, that was too easy.
+It’s <tt class="docutils literal">ctr = <span class="pre">c.create_container('myimage')</span></tt> then <tt class="docutils literal">c.start(ctr)</tt>.</p>
+<p>I’m not a docker expert, so I guess there’s a good reason for this choice.
+But I don’t think there is a good reason for the following choices.</p>
+<p>Second annoyance, half of the commands have different names from their Docker
+equivalent.  Some even are split in two.  Nothing terrible here, but still
+a bit annoying.</p>
+</div>
+<div class="section" id="missing-features">
+<h4>Missing features</h4>
+<p>Now come the real issues.</p>
+<p>Some Docker features can’t be used from docker-py.  One has especially driven
+me crazy: <tt class="docutils literal">docker run <span class="pre">--rm</span> […]</tt>.  With this <tt class="docutils literal"><span class="pre">--rm</span></tt>, Docker will
+automatically remove the container when its process has finished (but we
+explicitly need to remove it if we used <tt class="docutils literal">docker kill</tt>).</p>
+<p>One would argue: &quot;you just have to kill the container <em>then</em> remove it&quot;.
+Of course, that’s what I did.  But <em>sometimes</em>, it doesn’t work perfectly.</p>
+</div>
+<div class="section" id="broken-things">
+<h4>Broken things</h4>
+<p><strong>And here comes the madness.</strong></p>
+<p>An <tt class="docutils literal">APIError</tt> is randomly raised by docker-py, stating that the container
+can’t be removed because it’s still in use or still moving.  I guess it’s
+because docker-py sends a kill request without waiting the end of the real
+killing, so sometimes removal happens before the end of kill.  Oddly enough,
+I noticed the containers were in fact removed even if an error occurred.
+I abhor that, but I put a <tt class="docutils literal">try</tt> <tt class="docutils literal">except</tt> around <tt class="docutils literal">c.remove_container</tt>
+to ignore the issue.</p>
+<p>But wait!  That’s not all.  <tt class="docutils literal">c.kill</tt> only works with running containers,
+otherwise it raises an <tt class="docutils literal">APIError</tt>.  Docker has
+some tools to inspect a container and therefore know whether it’s running or
+not.  I thought I could detect when the container is running and kill it
+if it’s true.  But no, according to Docker, the process is always running (in
+fact, it’s a <a class="reference external" href="http://en.wikipedia.org/wiki/Zombie_process">zombie process</a>).
+And the line after, <tt class="docutils literal">c.kill</tt> tells me it’s not running… So you have to
+add another <tt class="docutils literal">try</tt> <tt class="docutils literal">except</tt> around <tt class="docutils literal">c.kill</tt>.
+We also need to add a <tt class="docutils literal">c.wait(ctr)</tt> in order to wait for zombie process to
+finish, between <tt class="docutils literal">c.kill</tt> and <tt class="docutils literal">c.remove_container</tt>.</p>
+<p>I wanted to get the output of something like this
+with a time limit of 2 seconds:</p>
+<pre class="literal-block">
+docker run --rm ubuntu:14.04 python3 -c [some_code_here]
+</pre>
+<p>And ended up with something like this:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+
+<span class="kn">import</span> <span class="nn">docker</span>
+<span class="kn">from</span> <span class="nn">docker.errors</span> <span class="kn">import</span> <span class="n">APIError</span>
+
+
+<span class="k">class</span> <span class="nc">TimeoutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">time_limit</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>  <span class="c"># From http://stackoverflow.com/a/601168/1576438</span>
+    <span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">TimeoutException</span><span class="p">(</span><span class="s">&#39;Timed out!&#39;</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">signal_handler</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s">&#39;1.9&#39;</span><span class="p">)</span>
+    <span class="n">ctr</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">create_container</span><span class="p">(</span><span class="s">&#39;ubuntu:14.04&#39;</span><span class="p">,</span>
+                             <span class="s">&#39;python3 -c &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>  <span class="c"># FIXME: Escape this</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">time_limit</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">logs</span><span class="p">(</span><span class="n">ctr</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="n">line</span>
+    <span class="k">except</span> <span class="n">TimeoutException</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">APIError</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">remove_container</span><span class="p">(</span><span class="n">ctr</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">APIError</span><span class="p">:</span>
+        <span class="k">pass</span>  <span class="c"># This should work anyway (and I don’t understand why)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">assert</span> <span class="n">execute</span><span class="p">(</span><span class="s">&quot;print(&#39;test1&#39;)&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;test1</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="k">assert</span> <span class="n">execute</span><span class="p">(</span><span class="s">&quot;while True: print(&#39;test2&#39;)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;test2</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</td></tr></table><p>At least I had a working version!  Docker was still throwing me some random
+warning, but I got what I wanted.</p>
+<p>But then something wonderful happened! A docker-py update!  Version 0.3.2,
+that should be a few bugfixes.  In my case it wasn’t, I had different bugs.
+First, the default API number switched from 1.9 to 1.12.  That’s a major
+change, not something you do in a security/bugfix release!  docker-py 0.4.0 was
+released one month later, they could have waited…  Anyways, updating to 0.3.2
+broke everything, especially <tt class="docutils literal">c.logs</tt>.  Forcing the API version in
+<tt class="docutils literal">docker.Client</tt> to 1.9 worked, but I don’t understand why since
+I was using Docker 1.0.0, and therefore API version 1.12.</p>
+</div>
+</div>
+<div class="section" id="simple-solutions-are-always-the-best">
+<h3>Simple solutions are always the best</h3>
+<p>After losing 3 full days digging the several issues, I decided to throw
+docker-py away in favour of a classical <tt class="docutils literal">subprocess.Popen</tt>.  It took me an
+hour to get exactly what I wanted.</p>
+<p>And it consists in fewer lines:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+
+
+<span class="k">def</span> <span class="nf">kill_and_remove</span><span class="p">(</span><span class="n">ctr_name</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;kill&#39;</span><span class="p">,</span> <span class="s">&#39;rm&#39;</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="s">&#39;docker </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">ctr_name</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                  <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="n">ctr_name</span> <span class="o">=</span> <span class="s">&#39;some_random_name&#39;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">&#39;timeout&#39;</span><span class="p">,</span> <span class="s">&#39;-s&#39;</span><span class="p">,</span> <span class="s">&#39;SIGKILL&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span>
+               <span class="s">&#39;docker&#39;</span><span class="p">,</span> <span class="s">&#39;run&#39;</span><span class="p">,</span> <span class="s">&#39;--rm&#39;</span><span class="p">,</span> <span class="s">&#39;--name&#39;</span><span class="p">,</span> <span class="n">ctr_name</span><span class="p">,</span>
+               <span class="s">&#39;ubuntu:14.04&#39;</span><span class="p">,</span> <span class="s">&#39;python3&#39;</span><span class="p">,</span> <span class="s">&#39;-c&#39;</span><span class="p">,</span> <span class="n">code</span><span class="p">],</span>
+              <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">9</span><span class="p">:</span>  <span class="c"># Happens on timeout</span>
+        <span class="c"># We have to kill the container since it still runs</span>
+        <span class="c"># detached from Popen and we need to remove it after because</span>
+        <span class="c"># --rm is not working on killed containers</span>
+        <span class="n">kill_and_remove</span><span class="p">(</span><span class="n">ctr_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">assert</span> <span class="n">execute</span><span class="p">(</span><span class="s">&quot;print(&#39;test1&#39;)&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;test1</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="k">assert</span> <span class="n">execute</span><span class="p">(</span><span class="s">&quot;while True: print(&#39;test2&#39;)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;test2</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>If you only want to control Docker locally, don’t use docker-py.
+Trust me.</p>
+<p>If you want to control a remote Docker from Python, I guess you have no option
+but to use docker-py.  Expect a lot of pain if you need some advanced features.</p>
+<p>What’s even more disappointing is that
+<strong>Docker may also be the cause of my problems</strong>.
+Because there are probably several issues here.  I would say:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Problem</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Docker API inconsistencies
+compared to
+<tt class="docutils literal">docker [command]</tt></td>
+<td><tt class="docutils literal">docker kill</tt> doesn’t complain when killing
+non-running containers.  Why is the API
+returning a 500 error?</td>
+</tr>
+<tr><td>Bad Docker API documentation</td>
+<td>Why can I use the API version from an older
+Docker than the installed one?  Why isn’t
+<tt class="docutils literal">c.logs</tt> working the same between 1.9 and
+1.12 when nothing mentions a change in the
+API changelog?  Or is it because of docker-py?</td>
+</tr>
+<tr><td>docker-py inconsistencies</td>
+<td>No direct equivalent of <tt class="docutils literal">docker run</tt>…</td>
+</tr>
+<tr><td>Bad docker-py release
+management</td>
+<td>Look at the number of changes for 0.3.2
+in the <a class="reference external" href="https://github.com/docker/docker-py/blob/429654b4eb632357011f9683d4d12fcfe974f41b/ChangeLog.md">docker-py changelog</a> and
+compare it with 0.4.0…</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+  </article>
+
+    <hr />
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = 'bertrandbordage';
+            var disqus_identifier = 'avoid-docker-py';
+            var disqus_url = 'http://blog.bordage.pro/avoid-docker-py/';
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+
+    </section>
+
+    <footer>
+<nav class="navbar navbar-default navbar-fixed-bottom footer" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target="#footer-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="https://github.com/BertrandBordage/blog"
+           title="Source of this blog">
+          <i class="fa fa-code fa-fw fa-lg"></i>
+        </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="footer-collapse">
+      <ul class="nav navbar-nav navbar-left">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="https://github.com/BertrandBordage" title="GitHub" class="hidden-xs">
+              <i class="fa fa-github fa-fw fa-lg"></i>
+            </a>
+            <a href="https://github.com/BertrandBordage" class="visible-xs">
+              <i class="fa fa-github fa-fw"></i> GitHub
+            </a>
+          </li>
+          <li>
+            <a href="https://www.gittip.com/BertrandBordage/" title="Gittip" class="hidden-xs">
+              <i class="fa fa-gittip fa-fw fa-lg"></i>
+            </a>
+            <a href="https://www.gittip.com/BertrandBordage/" class="visible-xs">
+              <i class="fa fa-gittip fa-fw"></i> Gittip
+            </a>
+          </li>
+          <li>
+            <a href="https://bitbucket.org/bbordage" title="Bitbucket" class="hidden-xs">
+              <i class="fa fa-bitbucket fa-fw fa-lg"></i>
+            </a>
+            <a href="https://bitbucket.org/bbordage" class="visible-xs">
+              <i class="fa fa-bitbucket fa-fw"></i> Bitbucket
+            </a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/bertrand.bordage" title="Facebook" class="hidden-xs">
+              <i class="fa fa-facebook fa-fw fa-lg"></i>
+            </a>
+            <a href="https://www.facebook.com/bertrand.bordage" class="visible-xs">
+              <i class="fa fa-facebook fa-fw"></i> Facebook
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/BertrandBordage" title="Twitter" class="hidden-xs">
+              <i class="fa fa-twitter fa-fw fa-lg"></i>
+            </a>
+            <a href="https://twitter.com/BertrandBordage" class="visible-xs">
+              <i class="fa fa-twitter fa-fw"></i> Twitter
+            </a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      $(function () {
+        $('[title]').tooltip();
+      })
+    </script>
+
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-44531910-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+  <script type="text/javascript">
+    var disqus_shortname = 'bertrandbordage';
+
+    (function () {
+      var s = document.createElement('script');
+      s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+  </script>
+
+  </body>
+</html>
