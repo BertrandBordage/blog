@@ -1,4 +1,4 @@
-pelican==3.4.0
+pelican==3.5.0
 webassets==0.10.1
 cssmin==0.2.0
 Fabric==1.9.0

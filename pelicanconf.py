@@ -15,7 +15,7 @@ PATH = 'content'
 DEFAULT_LANG = 'en'
 LOCALE = 'en_US.UTF-8'
 TIMEZONE = 'Europe/Paris'
-DEFAULT_DATE_FORMAT = '%d %B %Y'
+DEFAULT_DATE_FORMAT = '%-d %B %Y'
 
 JINJA_EXTENSIONS = [AssetsExtension]
 
